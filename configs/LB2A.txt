@@ -1,0 +1,37 @@
+sudo cp /opt/vyatta/etc/config.boot.default /config/config.boot
+reboot
+
+configure
+
+set system host-name LB2A
+
+set interfaces ethernet eth0 address 200.1.1.1/24
+set interfaces ethernet eth1 address 10.0.3.10/24
+set interfaces ethernet eth2 address 10.0.4.10/24
+set interfaces ethernet eth3 address 10.0.5.10/24
+
+set protocols static route 200.2.2.0/24 next-hop 200.1.1.10
+
+set load-balancing wan interface-health eth1 nexthop 10.0.3.1
+set load-balancing wan interface-health eth2 nexthop 10.0.4.2
+set load-balancing wan rule 1 inbound-interface eth0
+set load-balancing wan rule 1 interface eth1 weight 1
+set load-balancing wan rule 1 interface eth2 weight 1
+set load-balancing wan sticky-connections inbound
+set load-balancing wan disable-source-nat
+
+set high-availability vrrp group LB2Cluster vrid 11
+set high-availability vrrp group LB2Cluster interface eth3
+set high-availability vrrp group LB2Cluster virtual-address 192.168.101.1/24
+set high-availability vrrp sync-group LB2Cluster member LB2Cluster
+set high-availability vrrp group LB2Cluster rfc3768-compatibility
+
+set service conntrack-sync accept-protocol 'tcp,udp,icmp'
+set service conntrack-sync failover-mechanism vrrp sync-group LB2Cluster
+set service conntrack-sync interface eth3
+set service conntrack-sync mcast-group 225.0.0.50
+set service conntrack-sync disable-external-cache
+
+commit
+save
+exit

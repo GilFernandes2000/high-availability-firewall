@@ -1,0 +1,35 @@
+	1) 
+	
+	The need for firewall synchronization came from the existence of the NAT/PAT mechanisms in them.
+	Without the synchronization of the firewalls, the routers could route the traffic flow in a way
+where a firewall could receive response traffic from the outside of the private network 
+whose destination ip is not present in the nat translations table, since the request packets that
+originated the responses didnt leave the private network through it.
+	The synchronization of the load-balancers allows the nonexistence of firewall synchronization
+because the load balancer distributes the traffic evenly across the network and guarantees that
+packets from the same flow are routed through the same firewall.
+
+	2)
+	
+	The "Round Robin" load balancing algorithm works by distributing traffic to multiple devices 
+sequentially. This means that each incoming request is sent to a different device, each receiving 
+an equal share of the incoming traffic.
+	In this approach, load-balancers memorize the interface by wich they received the request traffic
+from the firewalls, and routes the response traffic through the same interface. 
+	Thus, we can conclude that this algorithm may allow the nonexistence of load balancer 
+synchronization.
+
+	3)
+	
+	During a DDoS (Distributed Denial of Service) attack, the attacker floods the target system 
+with a high volume of traffic, overwhelming the system's resources and rendering it inaccessible 
+to legitimate users.
+	Device/connection states synchronization is the process of maintaining and sharing information
+about the state of network devices and their connections across multiple devices. This information 
+may include information such as which connections are currently open, which devices are available, 
+and what resources are being used.
+	With this system in action, certain groups of network devices are synchronized and share the same 
+information about their connections and states. This way, if the attacker gains access to this 
+information, he can use it to identify the most vulnerable devices and connections to target,
+making it easier for the attacker to exploit vulnerabilities in the network.
+	

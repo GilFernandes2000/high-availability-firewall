@@ -1,0 +1,18 @@
+sudo cp /opt/vyatta/etc/config.boot.default /config/config.boot
+reboot
+
+configure
+
+set system host-name LB_DMZ
+
+set interfaces ethernet eth0 address 192.1.1.1/24
+set interfaces ethernet eth1 address 192.1.2.2/24
+set interfaces ethernet eth2 address 192.1.3.2/24
+
+set load-balancing wan interface-health eth1 nexthop 192.1.2.1
+set load-balancing wan interface-health eth2 nexthop 192.1.3.1
+set load-balancing wan rule 1 inbound-interface eth0
+set load-balancing wan rule 1 interface eth1 weight 1
+set load-balancing wan rule 1 interface eth2 weight 1
+set load-balancing wan sticky-connections inbound
+set load-balancing wan disable-source-nat
